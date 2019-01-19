@@ -16,8 +16,7 @@ export default class Movies extends Component {
   }
 
   handleRemove = (id) => {
-    let { movies } = this.state;
-    let movies = movies.filter( movie => movie._id !== id )
+    let movies = this.state.movies.filter( movie => movie._id !== id )
     this.setState({ movies })
   }
 
