@@ -11,18 +11,14 @@ export default class Movies extends Component {
   }
 
   componentDidMount() {
-    let newMovies = getMovies();
-    this.setState({
-      movies: newMovies
-    })
+    let movies = getMovies();
+    this.setState({ movies })
   }
 
   handleRemove = (id) => {
     let { movies } = this.state;
-    let newMovies = movies.filter( movie => movie._id !== id )
-    this.setState({
-      movies: newMovies
-    })
+    let movies = movies.filter( movie => movie._id !== id )
+    this.setState({ movies })
   }
 
   render() {
