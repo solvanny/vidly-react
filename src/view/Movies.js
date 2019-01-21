@@ -37,6 +37,7 @@ export default class Movies extends Component {
               <th scope="col">Genre</th>
               <th scope="col">Stock</th>
               <th scope="col">Rate</th>
+              <th scope="col">Like</th>
               <th scope="col"></th>
             </tr>
           </thead>
