@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 class Like extends Component {
 
-  handleClick = (likState) => {
+  handleClick = (likeState) => {
     // let  movies  = this.props.movies;
     // const index = movies.indexOf(movie);
     // movies[index] = {...movies[index]};
@@ -10,7 +10,7 @@ class Like extends Component {
     // this.setState({ movies });
 
     let { movie } = this.props;
-    if(!likState) {
+    if(!likeState) {
       movie.liked = true;
       return  this.props.setState({ movie });
     }
@@ -18,18 +18,18 @@ class Like extends Component {
     return  this.props.setState({ movie });
   }
 
-  heartClass = (likState) => {
-    if(!likState) return "far fa-heart";
+  heartClass = (likeState) => {
+    if(!likeState) return "far fa-heart";
     return "fas fa-heart";
   }
 
   render() {
-    let likState = this.props.movie.liked;
+    let likeState = this.props.movie.liked;
     return (
       <i 
-        className={this.heartClass(likState)} 
+        className={this.heartClass(likeState)} 
         style={{cursor: 'pointer'}}
-        onClick={() => this.handleClick(likState)}>
+        onClick={() => this.handleClick(likeState)}>
       </i>
     )
   }
