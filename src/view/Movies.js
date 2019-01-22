@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import Movie from '../Components/Movie';
 import { getMovies } from '../services/fakeMovieService';
+import Pagination from '../Components/common/Pagination';
+import { paginate } from '../utils/paginate';
 
 export default class Movies extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: []
+      movies: [],
+      pageSize: 6,
+      currentPage: 1
     };
   }
 
@@ -21,7 +25,9 @@ export default class Movies extends Component {
   }
 
   render() {
-    const { movies } = this.state;
+    const { movies,  currentPage, pageSize } = this.state;
+    const moviesPerPage = paginate(movies, currentPage, pageSize);
+    
     return (
       <React.Fragment>
         <p >
@@ -31,9 +37,9 @@ export default class Movies extends Component {
           }
         </p>
          <table className="table">
-          <thead className="thead-light">
+          <thead className=" table-dark bg-primary">
             <tr>
-              <th scope="col">Title</th>
+              <th scope="col ">Title</th>
               <th scope="col">Genre</th>
               <th scope="col">Stock</th>
               <th scope="col">Rate</th>
@@ -42,7 +48,7 @@ export default class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {movies.map((movie) => {
+            {moviesPerPage.map((movie) => {
               return(
                 <Movie 
                   key={movie._id} 
@@ -50,10 +56,12 @@ export default class Movies extends Component {
                   onRemove={this.handleRemove}
                   liked={movie.liked}
                   setState={this.setState.bind(this)}
+                  movies={this.state.movies}
                 />
               )})}
           </tbody>
         </table>
+        <Pagination itemCount={movies.length} {...this.state} setState={this.setState.bind(this)}/>
       </React.Fragment>
     )
   }

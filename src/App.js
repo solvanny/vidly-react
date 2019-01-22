@@ -3,7 +3,6 @@ import './App.css';
 import Movies from './view/Movies';
 
 
-
 class App extends Component {
   render() {
     return (

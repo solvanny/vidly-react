@@ -1,10 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class Like extends Component {
 
-  handleClick = (state) => {
+  handleClick = (likState) => {
+    // let  movies  = this.props.movies;
+    // const index = movies.indexOf(movie);
+    // movies[index] = {...movies[index]};
+    // movies[index].liked = !movies[index].liked;
+    // this.setState({ movies });
+
     let { movie } = this.props;
-    if(!state) {
+    if(!likState) {
       movie.liked = true;
       return  this.props.setState({ movie });
     }
@@ -12,18 +18,18 @@ class Like extends Component {
     return  this.props.setState({ movie });
   }
 
-  heartClass = (state) => {
-    if(!state) return "far fa-heart";
+  heartClass = (likState) => {
+    if(!likState) return "far fa-heart";
     return "fas fa-heart";
   }
 
   render() {
-    let state = this.props.movie.liked;
+    let likState = this.props.movie.liked;
     return (
       <i 
-        className={this.heartClass(state)} 
+        className={this.heartClass(likState)} 
         style={{cursor: 'pointer'}}
-        onClick={() => this.handleClick(state)}>
+        onClick={() => this.handleClick(likState)}>
       </i>
     )
   }
