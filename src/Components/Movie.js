@@ -1,25 +1,9 @@
 import React, { Component } from 'react';
+import Like from './common/Like';
 
 class Movie extends Component {
-  constructor() {
-    super();
-    this.state = { cliked: false }
-  }
-  
-  handleClick = (state) => {
-    if(!state) return  this.setState({ cliked: true });
-    this.setState({cliked: false});
-  }
-
-  heartClass = (state) => {
-    if(!state) return "fas fa-heart";
-    return "far fa-heart";
-  }
-
-
   render() {
     let {_id, title, genre, numberInStock, dailyRentalRate} = this.props.movie;
-    let state = this.state.cliked;
     return (
       <tr>
         <th scope="row">{title}</th>
@@ -27,9 +11,7 @@ class Movie extends Component {
         <td>{numberInStock}</td>
         <td>{dailyRentalRate}</td>
         <td>
-          <i className={this.heartClass(state)} 
-            onClick={() => this.handleClick(state)}>
-          </i>
+          <Like {...this.props}/>
         </td>
         <td>
           <button 

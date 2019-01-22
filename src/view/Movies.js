@@ -37,8 +37,8 @@ export default class Movies extends Component {
               <th scope="col">Genre</th>
               <th scope="col">Stock</th>
               <th scope="col">Rate</th>
-              <th scope="col">Like</th>
-              <th scope="col"></th>
+              <th />
+              <th />
             </tr>
           </thead>
           <tbody>
@@ -48,6 +48,8 @@ export default class Movies extends Component {
                   key={movie._id} 
                   movie={movie}
                   onRemove={this.handleRemove}
+                  liked={movie.liked}
+                  setState={this.setState.bind(this)}
                 />
               )})}
           </tbody>
