@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Like from './common/Like';
+import Like from './Like';
 
 class Movie extends Component {
   render() {
