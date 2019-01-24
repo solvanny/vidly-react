@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import Movie from './common/Movie';
+import MoviesTable from './MoviesTable';
 import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
 import Pagination from '../components//common/Pagination';
 import { paginate } from '../utils/paginate';
 import ListGroup from '../components/common/ListGroup';
+import _ from 'lodash';
 
 
 class Movies extends Component {
@@ -14,23 +15,22 @@ class Movies extends Component {
       movies: [],
       genres: [],
       pageSize: 9,
-      currentPage: 1
+      currentPage: 1,
+      sortColumn: { path: "title", order: "asc"}
     };
   }
 
   componentDidMount() {
-
-    let genres = [{name: 'All Genres'}, ...getGenres()]
-
+    let genres = [{_id: "", name: 'All Genres'}, ...getGenres()]
     this.setState({ movies: getMovies(), genres })
   }
 
-  handleRemove = (id) => {
+  handleRemove = id => {
     let movies = this.state.movies.filter( movie => movie._id !== id )
     this.setState({ movies })
   }
 
-  handlePageChange = (page) => {
+  handlePageChange = page => {
     this.setState({currentPage: page})
   }
 
@@ -38,57 +38,53 @@ class Movies extends Component {
     this.setState({ selectedGenre: genre, currentPage: 1 })
   }
 
+  handleOnSort = sortColumn => {
+   
+    this.setState({ sortColumn, ...sortColumn })
+  }
 
   render() {
-    const { movies,  currentPage, pageSize, selectedGenre } = this.state;
+    const {
+      movies,
+      genres,  
+      currentPage, 
+      pageSize, 
+      selectedGenre, 
+      sortColumn 
+    } = this.state;
 
     const filtered = selectedGenre && selectedGenre._id ? movies.filter(m => m.genre._id === selectedGenre._id) : movies;
 
-    const moviesPerPage = paginate(filtered, currentPage, pageSize);
+    const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
+
+    const moviesPerPage = paginate(sorted, currentPage, pageSize);
     
 
     return (
       <div className="row"> 
         <div className="col-3">
           <ListGroup 
-            items={this.state.genres}
+            items={genres}
             onItemSelect={this.handleGenreSelect}
-            selectedItem={this.state.selectedGenre}
+            selectedItem={selectedGenre}
           />
         </div>
 
         <div className="col">
         <p >
           { 
-            moviesPerPage.length  === 0 ? 'There are no movies in the Data Base': 
-            `Showing ${filtered.length } movies per page`
+            moviesPerPage.length  === 0 ? 'There are no movies in database': 
+            `Showing ${filtered.length } movies in database`
           }
         </p>
-        <table className="table">
-          <thead className=" table-dark bg-primary">
-            <tr>
-              <th>Title</th>
-              <th>Genre</th>
-              <th>Stock</th>
-              <th>Rate</th>
-              <th />
-              <th />
-            </tr>
-          </thead>
-          <tbody>
-            {moviesPerPage.map((movie) => {
-              return(
-                <Movie 
-                  key={movie._id} 
-                  movie={movie}
-                  onRemove={this.handleRemove}
-                  liked={movie.liked}
-                  setState={this.setState.bind(this)}
-                  movies={this.state.movies}
-                />
-              )})}
-          </tbody>
-        </table>
+        <MoviesTable 
+          allMovies={moviesPerPage}
+          sortColumn={sortColumn}
+          handleRemove={this.handleRemove}
+          setState={this.setState}
+          movies={movies}
+          onSort={this.handleOnSort}
+        />
         <Pagination 
           itemCount={filtered.length} 
           {...this.state} 
