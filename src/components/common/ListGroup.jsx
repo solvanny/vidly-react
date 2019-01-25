@@ -10,9 +10,10 @@ class ListGroup extends Component {
       selectedItem 
     } = this.props;
     return (
-      <ul className="list-group">
+      <ul className="list-group ">
       {items.map(item => 
         <li 
+          style={{cursor: 'pointer'}}
           onClick={() => onItemSelect(item)}
           className={selectedItem === item ? "list-group-item active" : "list-group-item"} 
           key={item[valueProperty]} 

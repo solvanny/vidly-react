@@ -25,8 +25,8 @@ class Movies extends Component {
     this.setState({ movies: getMovies(), genres })
   }
 
-  handleRemove = id => {
-    let movies = this.state.movies.filter( movie => movie._id !== id )
+  handleDelete = item => {
+    let movies = this.state.movies.filter( movie => movie._id !== item._id )
     this.setState({ movies })
   }
 
@@ -43,22 +43,44 @@ class Movies extends Component {
     this.setState({ sortColumn, ...sortColumn })
   }
 
-  render() {
+  handleLike = (movie) => {
+    let  movies  = this.state.movies;
+    const index = movies.indexOf(movie);
+    movies[index] = {...movies[index]};
+    movies[index].liked = !movies[index].liked;
+    this.setState({ movies });
+  }
+
+  getPageData = () => {
     const {
-      movies,
-      genres,  
+      movies,  
       currentPage, 
       pageSize, 
       selectedGenre, 
       sortColumn 
     } = this.state;
 
-    const filtered = selectedGenre && selectedGenre._id ? movies.filter(m => m.genre._id === selectedGenre._id) : movies;
+    const filtered = 
+      selectedGenre && selectedGenre._id 
+        ? movies.filter(m => m.genre._id === selectedGenre._id) 
+        : movies;
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
-
     const moviesPerPage = paginate(sorted, currentPage, pageSize);
-    
+
+    return { filtered, moviesPerPage }
+  }
+
+
+  render() {
+    const {
+      movies,
+      genres,
+      selectedGenre, 
+      sortColumn 
+    } = this.state;
+
+    const { filtered, moviesPerPage } = this.getPageData();
 
     return (
       <div className="row"> 
@@ -69,7 +91,6 @@ class Movies extends Component {
             selectedItem={selectedGenre}
           />
         </div>
-
         <div className="col">
         <p >
           { 
@@ -80,9 +101,9 @@ class Movies extends Component {
         <MoviesTable 
           allMovies={moviesPerPage}
           sortColumn={sortColumn}
-          handleRemove={this.handleRemove}
-          setState={this.setState}
+          onDelete={this.handleDelete}
           movies={movies}
+          onLike={this.handleLike}
           onSort={this.handleOnSort}
         />
         <Pagination 
@@ -90,7 +111,6 @@ class Movies extends Component {
           {...this.state} 
           onPageChange={this.handlePageChange}/>
         </div>
-         
       </div>
     )
   }
