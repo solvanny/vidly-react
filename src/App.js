@@ -8,6 +8,7 @@ import MovieForm from './components/MovieForm';
 import PageNotFound from './components/PageNotFound';
 import LoginForm from './components/LoginForm';
 import './App.css';
+import RegisterForm from './components/RegisterForm';
 
 
 class App extends Component {
@@ -17,6 +18,7 @@ class App extends Component {
         <PrimaryNavbar />
         <main role="main" className="container">   
           <Switch>
+            <Route exact  path="/register" component={RegisterForm} />
             <Route exact  path="/login" component={LoginForm} />
             <Route exact  path="/movies" render={(props) => <Movies {...props} /> } />
             <Route exact  path="/movies/:id" render={(props) => <MovieForm  {...props} /> } /> 
