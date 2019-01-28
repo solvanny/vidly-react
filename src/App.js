@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 import Movies from './components/Movies';
 import PrimaryNavbar from './components/navbar/PrimaryNavbar';
 import { Route, Switch, Redirect } from 'react-router-dom';
@@ -7,6 +6,9 @@ import Rentals from './components/Rentals';
 import Customers from './components/Customers';
 import MovieForm from './components/MovieForm';
 import PageNotFound from './components/PageNotFound';
+import LoginForm from './components/LoginForm';
+import './App.css';
+
 
 class App extends Component {
   render() {
@@ -15,6 +17,7 @@ class App extends Component {
         <PrimaryNavbar />
         <main role="main" className="container">   
           <Switch>
+            <Route exact  path="/login" component={LoginForm} />
             <Route exact  path="/movies" render={(props) => <Movies {...props} /> } />
             <Route exact  path="/movies/:id" render={(props) => <MovieForm  {...props} /> } /> 
             <Route exact path="/customers" component={Customers} /> 
