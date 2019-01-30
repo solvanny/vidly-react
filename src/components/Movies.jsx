@@ -10,16 +10,16 @@ import _ from 'lodash';
 
 
 class Movies extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-      genres: [],
-      pageSize: 9,
-      currentPage: 1,
-      sortColumn: { path: "title", order: "asc"}
-    };
-  }
+  state = {
+    movies: [],
+    genres: [],
+    currentPage: 1,
+    pageSize: 4,
+    searchQuery: "",
+    selectedGenre: null,
+    sortColumn: { path: "title", order: "asc" }
+  };
+
 
   componentDidMount() {
     let genres = [{_id: "", name: 'All Genres'}, ...getGenres()]
@@ -93,14 +93,12 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-        <Link 
-          to="/movies/new" 
-          className="btn btn-primary btn-lg active mb-2" 
-          role="button" 
-          aria-pressed="true"
-        >
-          New Movie
-        </Link>
+          <Link 
+            to="/movies/new" 
+            className="btn btn-primary btn-lg active mb-2" 
+          >
+            New Movie
+          </Link>
           <p >
             { 
               moviesPerPage.length  === 0 ? 'There are no movies in database': 

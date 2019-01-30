@@ -12,33 +12,19 @@ import RegisterForm from './components/RegisterForm';
 
 
 class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      movies: [],
-      genres: [],
-      pageSize: 9,
-      currentPage: 1,
-      sortColumn: { path: "title", order: "asc"}
-    };
-  }
-
-
   render() {
     return (
       <React.Fragment>
         <PrimaryNavbar />
-        <main role="main" className="container">   
+        <main className="container">
           <Switch>
-            <Route exact  path="/register" component={RegisterForm} />
-            <Route exact  path="/login" component={LoginForm} />
-            <Route exact  path="/movies" render={(props) => <Movies {...props} setState={this.setState} /> } />
-            
-            <Route exact  path="/movies/:id" render={(props) => <MovieForm  {...props} /> } /> 
-            <Route exact  path="/movies/new" render={() => <MovieForm /> } />
-            <Route exact path="/customers" component={Customers} /> 
-            <Route exact path="/not-found"  component={PageNotFound} /> 
-            <Route exact path="/rentals"  component={Rentals} /> 
+            <Route path="/register" component={RegisterForm} />
+            <Route path="/login" component={LoginForm} />
+            <Route path="/movies/:id" component={MovieForm} />
+            <Route path="/movies" component={Movies} />
+            <Route path="/customers" component={Customers} />
+            <Route path="/rentals" component={Rentals} />
+            <Route path="/not-found" component={PageNotFound} />
             <Redirect from="/" exact to="/movies" />
             <Redirect to="/not-found" />
           </Switch>
