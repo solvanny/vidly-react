@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import MoviesTable from './MoviesTable';
 import { getMovies } from '../services/fakeMovieService';
 import { getGenres } from '../services/fakeGenreService';
@@ -92,24 +93,33 @@ class Movies extends Component {
           />
         </div>
         <div className="col">
-        <p >
-          { 
-            moviesPerPage.length  === 0 ? 'There are no movies in database': 
-            `Showing ${filtered.length } movies in database`
-          }
-        </p>
-        <MoviesTable 
-          allMovies={moviesPerPage}
-          sortColumn={sortColumn}
-          onDelete={this.handleDelete}
-          movies={movies}
-          onLike={this.handleLike}
-          onSort={this.handleOnSort}
-        />
-        <Pagination 
-          itemCount={filtered.length} 
-          {...this.state} 
-          onPageChange={this.handlePageChange}/>
+        <Link 
+          to="/movies/new" 
+          className="btn btn-primary btn-lg active mb-2" 
+          role="button" 
+          aria-pressed="true"
+        >
+          New Movie
+        </Link>
+          <p >
+            { 
+              moviesPerPage.length  === 0 ? 'There are no movies in database': 
+              `Showing ${filtered.length } movies in database`
+            }
+          </p>
+          <MoviesTable 
+            allMovies={moviesPerPage}
+            sortColumn={sortColumn}
+            onDelete={this.handleDelete}
+            movies={movies}
+            onLike={this.handleLike}
+            onSort={this.handleOnSort}
+          />
+          <Pagination 
+            itemCount={filtered.length} 
+            {...this.state} 
+            onPageChange={this.handlePageChange}
+          />
         </div>
       </div>
     )

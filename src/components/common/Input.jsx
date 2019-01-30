@@ -1,7 +1,7 @@
 import React from 'react';
 
-const Input = (props) => {
-  const { name, error, label, ...rest } = props;
+const Input = props => {
+  const {  name, error, label, ...rest } = props;
   return (
     <div className="form-group">
       <label htmlFor={name} > {label} </label>

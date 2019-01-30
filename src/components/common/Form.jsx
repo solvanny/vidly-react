@@ -1,10 +1,21 @@
 import React, { Component } from 'react';
 import Joi  from 'joi-browser';
 import Input from './Input';
+import InputMovie from './InputMovie';
+
 
 export default class Form extends Component {
   state = {
     data: {usename: "", password: ""},
+    movie:  {
+      title: "", 
+      genre: {
+        _id: "",
+        name: ""
+      }, 
+      numberInStock: 0,
+      dailyRentalRate: 0
+    },
     errors: {}
   }
 
@@ -16,9 +27,10 @@ export default class Form extends Component {
   }
 
   validate = () => {
+    let {data} = this.state;
     let options = { abortEarly: false }
-    let { error } = Joi.validate(this.state.data, this.schema, options);
-  
+    let { error } = Joi.validate(data, this.schema, options);
+    
     if (!error) return null;
 
     let errors = {};
@@ -37,6 +49,7 @@ export default class Form extends Component {
   }
 
   handleChange = ({currentTarget: input}) => {
+
     let errors = {...this.state.errors};
     let errorMessage = this.validateProperty(input);
     if (errorMessage) errors[input.name] = errorMessage;
@@ -47,6 +60,19 @@ export default class Form extends Component {
     this.setState({ data, errors })
   }
 
+  handleMovieChange = ({currentTarget: input}) => {
+    // let errors = {...this.state.errors};
+    // let errorMessage = this.validateProperty(input);
+    // console.log(errorMessage)
+    // if (errorMessage) errors[input.name] = errorMessage;
+    // else delete errors[input.name];
+    
+    let movie = {...this.state.movie}
+    movie[input.name] = input.value
+    this.setState({ movie })
+  }
+
+ 
   renderButton(label){
    return (
     <button 
@@ -55,8 +81,8 @@ export default class Form extends Component {
     </button>
    )}
 
-  renderInput(name, label, type = 'text') {
-    const { data, errors } = this.state;
+  renderInput(name, label, type = 'text',) {
+    let { data, errors } = this.state;
     return (
       <Input 
         onChange={this.handleChange} 
@@ -66,6 +92,21 @@ export default class Form extends Component {
         label={label}
         error={errors[name]}
       />
-    ) 
+    )
+  }
+
+  renderMovieInput(name, label, type = 'text') {
+    let {movie} = this.state;
+  
+    return (
+    <InputMovie
+      
+      onChange={this.handleMovieChange} 
+      type={type}
+      name={name}
+      label={label}
+      value={movie[name]}
+    />
+    )
   }
 }
