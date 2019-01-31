@@ -7,6 +7,7 @@ import Pagination from '../components//common/Pagination';
 import { paginate } from '../utils/paginate';
 import ListGroup from '../components/common/ListGroup';
 import _ from 'lodash';
+import SearchBox from './SearchBox';
 
 
 class Movies extends Component {
@@ -36,7 +37,7 @@ class Movies extends Component {
   }
 
   handleGenreSelect = genre => {
-    this.setState({ selectedGenre: genre, currentPage: 1 })
+    this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 })
   }
 
   handleOnSort = sortColumn => {
@@ -58,13 +59,18 @@ class Movies extends Component {
       currentPage, 
       pageSize, 
       selectedGenre, 
-      sortColumn 
+      sortColumn,
+      searchQuery  
     } = this.state;
 
-    const filtered = 
-      selectedGenre && selectedGenre._id 
-        ? movies.filter(m => m.genre._id === selectedGenre._id) 
-        : movies;
+    let filtered = movies;
+    
+    if(searchQuery)
+      filtered = movies.filter(m => 
+        m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+        )
+    else if (selectedGenre && selectedGenre._id)
+        filtered = movies.filter(m => m.genre._id === selectedGenre._id);
 
     const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order])
     const moviesPerPage = paginate(sorted, currentPage, pageSize);
@@ -72,13 +78,17 @@ class Movies extends Component {
     return { filtered, moviesPerPage }
   }
 
+  handleSearch = query => {
+    this.setState({searchQuery: query, selectedGenre: null, currentPage: 1})
+  }
 
   render() {
     const {
       movies,
       genres,
       selectedGenre, 
-      sortColumn 
+      sortColumn,
+      searchQuery 
     } = this.state;
 
     const { filtered, moviesPerPage } = this.getPageData();
@@ -105,6 +115,7 @@ class Movies extends Component {
               `Showing ${filtered.length } movies in database`
             }
           </p>
+          <SearchBox value={searchQuery} onChange={this.handleSearch} />
           <MoviesTable 
             allMovies={moviesPerPage}
             sortColumn={sortColumn}

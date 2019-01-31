@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Movies from './components/Movies';
-import PrimaryNavbar from './components/navbar/PrimaryNavbar';
+import NavBar from './components/navbar/NavBar';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Rentals from './components/Rentals';
 import Customers from './components/Customers';
@@ -15,7 +15,7 @@ class App extends Component {
   render() {
     return (
       <React.Fragment>
-        <PrimaryNavbar />
+        <NavBar />
         <main className="container">
           <Switch>
             <Route path="/register" component={RegisterForm} />
